@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,8 +24,8 @@ import chouakira.cc.takeumbrella.enumcode.WeatherCode;
 
 public class XMLParser {
 
-    public static Map<String, Forecast> getWeatherForecast(InputStream is) {
-        Map<String, Forecast> map = new ArrayMap<>();
+    public static List getWeatherForecast(InputStream is) {
+        List<Forecast> list = new ArrayList<Forecast>();
 
         //https://stackoverflow.com/questions/4138754/getting-an-attribute-value-in-xml-element
         try {
@@ -37,16 +39,16 @@ public class XMLParser {
                 Log.e(Const.TAG, "getWeatherForecast: node is " + nodeList.getLength());
 
                 Forecast forecast = new Forecast();
+                forecast.setTime(sdf.parse(nodeList.item(x).getAttributes().getNamedItem("from").getNodeValue()));
                 forecast.setWeather((symbol.contains("rain") && !symbol.contains("light")) ? WeatherCode.Rain : WeatherCode.NotRain);
 
-                map.put(nodeList.item(x).getAttributes().getNamedItem("from").getNodeValue()
-                        , forecast);
+                list.add(forecast);
             }
         } catch(Exception ex) {
             Log.e(Const.TAG, "getWeatherForecast: Exception " + ex.toString());
         }
 
 
-        return map;
+        return list;
     }
 }

@@ -1,6 +1,9 @@
 package chouakira.cc.takeumbrella.entity;
 
+import java.util.Date;
+
 import chouakira.cc.takeumbrella.enumcode.WeatherCode;
+import chouakira.cc.takeumbrella.util.Const;
 
 /**
  * Created by qiao on 2017/8/27.
@@ -28,8 +31,20 @@ public class Forecast {
 
     float temperature;
 
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    Date time;
+
+
     @Override
     public String toString() {
-        return String.format("Temperature is %s°C; Weather is %s", getTemperature(), getWeather().toString());
+        return String.format("Time is %s; Temperature is %s°C; Weather is %s"
+                , Const.sdf.format(getTime()), getTemperature(), getWeather().toString());
     }
 }

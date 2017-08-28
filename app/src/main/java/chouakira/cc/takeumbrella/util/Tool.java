@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import chouakira.cc.takeumbrella.entity.Forecast;
@@ -19,11 +20,10 @@ import chouakira.cc.takeumbrella.entity.Forecast;
 
 public class Tool {
 
-    public static void ShowArrayMap(Map<String, Forecast> map) {
+    public static void ShowArrayMap(List list) {
         int i = 0;
-        for(Map.Entry<String, Forecast> set : map.entrySet()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Log.e(Const.TAG, String.format("*%d : %s -- %s", i++, set.getKey(), set.getValue()));
+        for(Object object : list) {
+            Log.e(Const.TAG, object.toString());
         }
     }
 
@@ -59,6 +59,18 @@ public class Tool {
 
         Log.e(Const.TAG, "setTodayTime: " + today);
         return today;
+    }
+
+    public static int searchForecastArrays(List list, Date date) {
+        int result = -1;
+        for(int i = 0; i < list.size(); i++) {
+            if(((Forecast)list.get(i)).getTime().equals(date)) {
+                result = i;
+                break;
+            }
+        }
+
+        return result;
     }
 
     public static void Test() {

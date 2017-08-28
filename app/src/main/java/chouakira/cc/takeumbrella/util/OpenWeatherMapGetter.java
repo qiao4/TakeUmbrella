@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 import chouakira.cc.takeumbrella.R;
@@ -31,15 +32,17 @@ public class OpenWeatherMapGetter implements GetWeather {
 
         try {
             InputStream is = SimpleHttp.getStreamXMLData(url);
-            ArrayMap<String, Forecast> map =
-                    (ArrayMap<String, Forecast>) XMLParser.getWeatherForecast(
+            ArrayList<Forecast> list =
+                    (ArrayList<Forecast>) XMLParser.getWeatherForecast(
                             new FileInputStream(new File(ContextHolder.getContext().getCacheDir(), "a.xml")));
 
-            if(map != null && map.size() > 0) {
+            int index = -1;
+            if(list != null && list.size() > 0
+                    && (index = Tool.searchForecastArrays(list, Tool.setTodayTime(new Date()))) > -1) {
                 //log
-                Tool.ShowArrayMap(map);
+                Tool.ShowArrayMap(list);
                 //log
-                return map.get(Const.sdf.format(Tool.setTodayTime(new Date()))).getWeather();
+                return list.get(index).getWeather();
             } else {
                 Log.e(Const.TAG, " get nothing from " + url);
             }
